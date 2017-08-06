@@ -17,10 +17,15 @@ func Hello(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 }
 
 func main() {
-	fmt.Println("hello world")
+	port := os.Getenv("PORT")
+
+	if port == "" {
+		log.Fatal("$PORT must be set")
+	}
+
 	router := httprouter.New()
 	router.GET("/", Index)
 	router.GET("/hello/:name", Hello)
 
-	log.Fatal(http.ListenAndServe(os.PORT, router))
+	log.Fatal(http.ListenAndServe(":" + port, router))
 }
